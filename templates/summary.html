@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}Summary &mdash; Choosing a CSS Approach{% endblock %}
+
+{% block content %}
+
+<!-- ARTICLE LAYOUT ---------------------------------------------------------
+     This page is laid out with CSS Grid using NAMED AREAS. Look at
+     .article-grid in style.css: the layout is literally drawn out in text.
+
+       grid-template-areas:
+         "sidebar  headline"
+         "sidebar  body";
+
+     Then each child says which area it belongs to. You can rearrange the
+     whole page by editing that little picture, without touching the HTML.
+     This is the clearest layout tool in CSS and it is worth learning
+     properly. -->
+
+<div class="article-grid">
+
+  <!-- SIDEBAR — sticks to the top of the screen as you scroll (see CSS). -->
+  <aside class="article-sidebar" aria-label="Contents">
+    <h2 class="sidebar-heading">Contents</h2>
+    <ol class="sidebar-nav">
+      <li><a href="#question">The question</a></li>
+      <li><a href="#vanilla">1. Plain CSS</a></li>
+      <li><a href="#w3">2. W3.CSS</a></li>
+      <li><a href="#pico">3. Pico CSS</a></li>
+      <li><a href="#numbers">The numbers</a></li>
+      <li><a href="#choosing">How to choose</a></li>
+    </ol>
+
+    <h2 class="sidebar-heading">Compare</h2>
+    <ul class="sidebar-nav">
+      {% for key, label in [('vanilla', 'Plain CSS'), ('w3', 'W3.CSS'), ('pico', 'Pico CSS')] %}
+        <li>
+          {% if key == this_site %}
+            <strong>{{ label }}</strong> <span class="you-are-here">you are here</span>
+          {% else %}
+            <a href="{{ site_urls[key] }}/summary">{{ label }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <p class="sidebar-note">
+      Each demo runs as its own Flask app, so all three need to be running for
+      these links to work.
+    </p>
+  </aside>
+
+  <!-- HEADLINE — sits in the "headline" grid area. -->
+  <header class="article-headline">
+    <p class="kicker">Plain CSS version</p>
+    <h1>Three ways to style the same site</h1>
+    <p class="standfirst">
+      This site, the W3.CSS site and the Pico CSS site are the same Flask
+      application with the same database and the same SQL. Only the templates
+      and the stylesheets differ. Here is what that experiment actually showed.
+    </p>
+  </header>
+
+  <!-- BODY — the article itself. -->
+  <div class="article-body">
+
+    <section id="question">
+      <h2>The question</h2>
+      <p>
+        Every website needs CSS. The choice is not <em>whether</em> to style a
+        site but <em>who writes the styles</em>: you, or a library somebody
+        else wrote. That is the only real decision, and it has consequences
+        beyond how the page looks.
+      </p>
+      <p>
+        To test it properly we built the same site three times. Identical
+        <code>app.py</code>, identical <code>schema.sql</code>, identical
+        <code>seed.py</code>, identical SQL query. The Python files are
+        byte-for-byte the same in all three folders. Everything you see below
+        comes from changing nothing but the presentation layer.
+      </p>
+
+      <blockquote class="pull-quote">
+        If the backend never changed, then every difference between the three
+        sites is a difference in how you write HTML and CSS &mdash; not in
+        what the site can do.
+      </blockquote>
+    </section>
+
+    <section id="vanilla">
+      <h2>1. Plain CSS &mdash; write it yourself</h2>
+      <p>
+        No library. One stylesheet, written by hand, loaded by
+        <code>base.html</code>. This is the version you are reading now.
+      </p>
+
+      <h3>The advantages</h3>
+      <ul>
+        <li>
+          <strong>Nothing to load.</strong> No CDN request, no dependency, no
+          version to keep up to date. The site works offline and in a locked-down
+          school network.
+        </li>
+        <li>
+          <strong>The HTML stays readable.</strong> Seven class names across the
+          whole listing page. You can look at the markup and see the content,
+          not a wall of styling instructions.
+        </li>
+        <li>
+          <strong>Total control.</strong> Nothing is fighting you. There is no
+          library rule to override, no <code>!important</code> to out-rank, no
+          surprise defaults. If the page looks wrong, the reason is in your file.
+        </li>
+        <li>
+          <strong>You actually learn CSS.</strong> This matters more than it
+          sounds. Flexbox, Grid, the cascade and specificity are transferable
+          skills. W3.CSS class names are not &mdash; they are worth nothing the
+          moment you use a different library.
+        </li>
+        <li>
+          <strong>The site looks like yours.</strong> A framework's defaults are
+          recognisable. Hand-written CSS is the only way to look like nobody else.
+        </li>
+      </ul>
+
+      <h3>The cost</h3>
+      <p>
+        Speed. This version needed by far the most CSS, and every responsive
+        breakpoint is a media query you write and debug yourself. If you do not
+        already know Flexbox and Grid, you will spend your time fighting layout
+        instead of building features.
+      </p>
+    </section>
+
+    <section id="w3">
+      <h2>2. W3.CSS &mdash; a class for everything</h2>
+      <p>
+        A utility library. You add class names like <code>w3-card-4</code>,
+        <code>w3-theme</code> and <code>w3-col m4</code> to your HTML, and the
+        library supplies the rules. It defines around 360 classes in about 23 KB.
+      </p>
+
+      <h3>The advantages</h3>
+      <ul>
+        <li>
+          <strong>Almost no CSS to write.</strong> This was the clear winner on
+          volume. The gallery page &mdash; a fully responsive 12-column tile grid
+          &mdash; needed <em>zero</em> lines of layout CSS from us.
+        </li>
+        <li>
+          <strong>The 12-column grid is genuinely excellent.</strong>
+          <code>s6 m4 l3</code> means two tiles per row on a phone, three on a
+          tablet, four on a laptop. Read them as fractions of twelve. No media
+          queries, no thinking.
+        </li>
+        <li>
+          <strong>Themes are one line.</strong> Swapping the theme stylesheet
+          recolours the entire site, provided you use <code>w3-theme</code>
+          rather than <code>w3-green</code> anywhere you need the brand colour.
+        </li>
+        <li>
+          <strong>Fast to build and hard to make ugly.</strong> The spacing and
+          colour system is consistent by default. For a school project on a
+          deadline this is a real advantage, not a small one.
+        </li>
+        <li>
+          <strong>The documentation is aimed at beginners.</strong> Every class
+          has an example you can copy.
+        </li>
+      </ul>
+
+      <h3>The cost</h3>
+      <p>
+        The HTML gets noisy &mdash; 29 class names on the listing page against
+        seven here. And <code>&lt;div class="w3-card-4 w3-white"&gt;</code> tells
+        a screen reader nothing about what the box <em>is</em>. Underneath, the
+        column system uses floats rather than Grid, which is why the gallery
+        needs a <code>w3-clear</code> after it and why the right-hand nav links
+        have to be written back-to-front in the source.
+      </p>
+    </section>
+
+    <section id="pico">
+      <h2>3. Pico CSS &mdash; style the HTML you already have</h2>
+      <p>
+        The opposite idea. Pico styles plain HTML elements directly and gives
+        you around 149 CSS variables to customise them. An
+        <code>&lt;article&gt;</code> is a card. A <code>&lt;nav&gt;</code> is a
+        nav bar. A <code>&lt;table&gt;</code> is already striped.
+      </p>
+
+      <h3>The advantages</h3>
+      <ul>
+        <li>
+          <strong>The cleanest HTML of the three.</strong> Six class names on the
+          listing page. Semantic elements do the work, so the markup describes
+          the content rather than its appearance.
+        </li>
+        <li>
+          <strong>Accessibility comes along for the ride.</strong> Using
+          <code>&lt;article&gt;</code>, <code>&lt;figure&gt;</code> and
+          <code>&lt;nav&gt;</code> because they look right also means screen
+          readers and search engines understand the page.
+        </li>
+        <li>
+          <strong>Dark mode, free.</strong> Delete one attribute and the site
+          follows the visitor's operating system. Every variable has a light and
+          a dark value. Neither of the other two options gives you this.
+        </li>
+        <li>
+          <strong>Variables beat classes for customising.</strong> Writing
+          <code>background: var(--pico-primary-background)</code> means your own
+          CSS recolours with the theme automatically. You extend the library
+          instead of fighting it.
+        </li>
+        <li>
+          <strong>Forms are excellent out of the box</strong> &mdash; worth
+          knowing if your project has a login or a contact page.
+        </li>
+      </ul>
+
+      <h3>The cost</h3>
+      <p>
+        It is the largest download of the three at about 80 KB, and it barely
+        does layout. Pico's own <code>.grid</code> only makes equal columns on a
+        single row, so both the listing and the gallery needed hand-written CSS
+        Grid anyway. Pico is a content and component library, not a layout one
+        &mdash; which means you still need to know Grid before it helps you.
+      </p>
+    </section>
+
+    <section id="numbers">
+      <h2>The numbers</h2>
+      <p>
+        Measured across the three folders, with comments and blank lines
+        stripped out:
+      </p>
+
+      <!-- This table breaks out of the article column to full width, using
+           grid-column on .full-bleed. See the CSS. -->
+      <div class="full-bleed">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th>Plain CSS</th>
+              <th>W3.CSS</th>
+              <th>Pico CSS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Class names on the listing page</th>
+              <td>7</td><td>29</td><td>6</td>
+            </tr>
+            <tr>
+              <th scope="row">Class names on the gallery page</th>
+              <td>7</td><td>27</td><td>7</td>
+            </tr>
+            <tr>
+              <th scope="row">Library downloaded</th>
+              <td>none</td><td>~24 KB</td><td>~80 KB</td>
+            </tr>
+            <tr>
+              <th scope="row">Gallery grid</th>
+              <td>hand-written</td><td>class names only</td><td>hand-written</td>
+            </tr>
+            <tr>
+              <th scope="row">Automatic dark mode</th>
+              <td>no</td><td>no</td><td>yes</td>
+            </tr>
+            <tr>
+              <th scope="row">Works with no internet</th>
+              <td>yes</td><td>only if downloaded</td><td>only if downloaded</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The surprise is the last row of the layout comparison. Pico needed
+        <em>more</em> custom CSS than W3.CSS despite being the bigger download,
+        because it deliberately leaves layout to you. "Bigger library" does not
+        mean "less work".
+      </p>
+    </section>
+
+    <section id="choosing">
+      <h2>How to choose</h2>
+      <p>
+        There is no correct answer, and an examiner is not looking for one.
+        They are looking for a decision you can justify. Three honest
+        recommendations:
+      </p>
+
+      <div class="advice-cards">
+        <div class="advice-card">
+          <h3>Pick plain CSS if&hellip;</h3>
+          <p>
+            you want to learn CSS properly, your design is unusual, or you need
+            the site to work with no internet connection. Budget more time.
+          </p>
+        </div>
+        <div class="advice-card">
+          <h3>Pick W3.CSS if&hellip;</h3>
+          <p>
+            your site is mostly grids and cards, you are short on time, and you
+            would rather spend it on the Python and the database.
+          </p>
+        </div>
+        <div class="advice-card">
+          <h3>Pick Pico if&hellip;</h3>
+          <p>
+            you care about clean, accessible markup, you want dark mode, and you
+            are already comfortable enough with Grid to do your own layout.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        Whichever you choose, write down <strong>why</strong> before you start.
+        That sentence is worth more marks than the choice itself.
+      </p>
+
+      <p class="next-step">
+        <a class="btn" href="{{ site_urls['w3'] }}/summary">Read the W3.CSS version &rarr;</a>
+        <a class="btn" href="{{ site_urls['pico'] }}/summary">Read the Pico version &rarr;</a>
+      </p>
+    </section>
+
+  </div><!-- /.article-body -->
+</div><!-- /.article-grid -->
+
+{% endblock %}

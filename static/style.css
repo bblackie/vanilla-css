@@ -1,0 +1,573 @@
+/* ==========================================================================
+   style.css — greyscale wireframe styling.
+   Deliberately plain. Every rule is here to be read and changed.
+   ========================================================================== */
+
+/* --- Reset-ish -------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;          /* padding counts INSIDE the width */
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background: #f4f4f4;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;                    /* keeps the image proportions correct */
+  background: #ddd;                /* grey box shows while the image loads */
+}
+
+/* --- Shared page container -------------------------------------------- */
+/* .wrap keeps content centred and stops it stretching too wide.
+   This is the single most useful layout class on any site. */
+
+.wrap {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- Header ------------------------------------------------------------ */
+
+.site-header {
+  background: #fff;
+  border-bottom: 2px solid #333;
+  padding: 16px 0;
+}
+
+.site-header .wrap {
+  display: flex;                   /* logo left, nav right */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.logo {
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-decoration: none;
+  color: #333;
+  border: 2px solid #333;
+  padding: 8px 16px;
+}
+
+.site-nav a {
+  color: #333;
+  text-decoration: none;
+  margin-left: 20px;
+  border-bottom: 1px solid transparent;
+}
+
+.site-nav a:hover {
+  border-bottom-color: #333;
+}
+
+/* --- Headings and text ------------------------------------------------- */
+
+h1 {
+  font-size: 28px;
+  margin: 32px 0 8px;
+}
+
+h2 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.lead {
+  color: #666;
+  margin-top: 0;
+}
+
+/* --- The listing ------------------------------------------------------- */
+/* Each row is: image on the left, text on the right.
+   Flexbox does the side-by-side arrangement. */
+
+.listing {
+  list-style: none;                /* remove the bullet points */
+  margin: 24px 0;
+  padding: 0;
+}
+
+.item-row {
+  display: flex;
+  gap: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.item-thumb {
+  flex: 0 0 240px;                 /* fixed width, does not grow or shrink */
+}
+
+.item-text {
+  flex: 1;                         /* takes up all the remaining space */
+}
+
+.item-text h2 a {
+  color: #333;
+  text-decoration: none;
+}
+
+.item-text h2 a:hover {
+  text-decoration: underline;
+}
+
+.item-text p {
+  margin: 0 0 12px;
+  color: #666;
+}
+
+/* --- Category badge ---------------------------------------------------- */
+/* This is the bit of data that came from the JOIN. */
+
+.badge {
+  display: inline-block;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+}
+
+/* --- Buttons and links ------------------------------------------------- */
+
+.btn {
+  display: inline-block;
+  border: 2px solid #333;
+  color: #333;
+  text-decoration: none;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+.btn:hover {
+  background: #333;
+  color: #fff;
+}
+
+.breadcrumb {
+  margin: 24px 0 0;
+}
+
+.breadcrumb a {
+  color: #666;
+}
+
+/* --- Detail page ------------------------------------------------------- */
+
+.detail {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 24px;
+  margin: 16px 0 40px;
+}
+
+.detail h1 {
+  margin-top: 4px;
+}
+
+.detail-image {
+  margin: 24px 0;
+}
+
+.caption {
+  font-size: 13px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.detail-body p {
+  margin: 0 0 16px;
+}
+
+/* --- Gallery page ------------------------------------------------------
+   The listing above uses FLEXBOX, because each row is a one-dimensional
+   arrangement: image, then text, side by side.
+
+   The gallery uses CSS GRID, because tiles are two-dimensional: they wrap
+   into rows AND columns. Use flexbox for a line of things, grid for a
+   grid of things. */
+
+.gallery {
+  list-style: none;
+  margin: 24px 0;
+  padding: 0;
+
+  display: grid;
+  /* Read this as: "make as many equal columns as will fit, where each one is
+     at least 240px wide and at most one fair share of the space."
+     auto-fill decides the column count for us, so on a phone you get one
+     column, on a laptop four — with NO media query. This single line
+     replaces about fifteen lines of breakpoint code. */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.tile {
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+/* The whole tile is one link. Removing the underline and inheriting the
+   text colour stops it looking like a wall of blue links. */
+.tile a {
+  display: block;
+  color: #333;
+  text-decoration: none;
+}
+
+.tile img {
+  width: 100%;
+  aspect-ratio: 1 / 1;    /* force a square box... */
+  object-fit: cover;      /* ...and crop the photo to fill it, not squash it */
+}
+
+.tile-caption {
+  display: block;
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.tile-title {
+  display: block;
+  margin-top: 6px;
+  font-weight: bold;
+}
+
+/* Lift the tile slightly on hover so it reads as clickable. */
+.tile:hover {
+  border-color: #333;
+}
+
+.tile:hover .tile-title {
+  text-decoration: underline;
+}
+
+/* --- Summary article page ----------------------------------------------
+   The gallery used CSS Grid to tile equal boxes. This page uses the more
+   powerful half of Grid: NAMED AREAS.
+
+   Instead of counting columns, you draw the layout as a picture in text and
+   then tell each element which named area it lives in. The big advantage is
+   that you can rearrange the entire page by editing the picture, without
+   touching a single line of HTML. */
+
+.article-grid {
+  display: grid;
+
+  /* Column 1 holds the sidebar and is a fixed 220px.
+     Column 2 holds the article and takes whatever is left (1fr). */
+  grid-template-columns: 220px 1fr;
+  column-gap: 40px;
+
+  /* THE PICTURE. Two rows, two columns. Read it like a map of the page:
+     the sidebar occupies the left column of both rows, the headline sits
+     top-right, the body bottom-right. */
+  grid-template-areas:
+    "sidebar  headline"
+    "sidebar  body";
+
+  align-items: start;      /* stop the sidebar stretching to full height */
+  margin: 24px 0 40px;
+}
+
+/* Each child names its area. No order, no floats, no positioning maths. */
+.article-sidebar   { grid-area: sidebar; }
+.article-headline  { grid-area: headline; }
+.article-body      { grid-area: body; }
+
+/* --- The sidebar ------------------------------------------------------- */
+
+.article-sidebar {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 16px;
+
+  /* position:sticky pins the sidebar once you scroll past it, but only
+     while its grid area is still on screen. One line, no JavaScript. */
+  position: sticky;
+  top: 20px;
+}
+
+.sidebar-heading {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  margin: 16px 0 8px;
+}
+
+.sidebar-heading:first-child {
+  margin-top: 0;
+}
+
+.sidebar-nav {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+.sidebar-nav li {
+  margin-bottom: 6px;
+}
+
+.sidebar-nav a {
+  color: #333;
+}
+
+.you-are-here {
+  display: inline-block;
+  background: #333;
+  color: #fff;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 1px 6px;
+}
+
+.sidebar-note {
+  font-size: 12px;
+  color: #888;
+  margin: 8px 0 0;
+}
+
+/* --- The headline ------------------------------------------------------ */
+
+.article-headline {
+  border-bottom: 3px solid #333;
+  padding-bottom: 16px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #888;
+}
+
+.article-headline h1 {
+  margin: 4px 0 12px;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.standfirst {
+  margin: 0;
+  font-size: 18px;
+  color: #666;
+}
+
+/* --- The article body -------------------------------------------------- */
+/* A SECOND grid, nested inside the first. This one exists purely so that
+   some elements can break out of the text column to full width — see
+   .full-bleed below. Grids nest freely; this is normal, not a hack. */
+
+.article-body {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.article-body section {
+  margin-bottom: 32px;
+}
+
+.article-body h2 {
+  font-size: 24px;
+  margin: 24px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ccc;
+}
+
+.article-body h3 {
+  font-size: 17px;
+  margin: 20px 0 6px;
+}
+
+/* Cap the line length. Anything past about 70 characters is tiring to read,
+   which is why newspapers use narrow columns. */
+.article-body p,
+.article-body ul {
+  max-width: 68ch;
+}
+
+.article-body li {
+  margin-bottom: 8px;
+}
+
+.article-body code {
+  background: #eee;
+  padding: 1px 5px;
+  font-size: 14px;
+}
+
+/* --- Pull quote -------------------------------------------------------- */
+
+.pull-quote {
+  margin: 24px 0;
+  padding: 16px 20px;
+  border-left: 6px solid #333;
+  background: #fff;
+  font-size: 19px;
+  font-style: italic;
+  color: #444;
+  max-width: 68ch;
+}
+
+/* --- Full-bleed block --------------------------------------------------
+   Inside .article-body the content sits in one column. An element marked
+   .full-bleed is told to span from the first grid line to the last, so it
+   escapes the reading-width limit above and uses the whole article area.
+   Handy for wide tables and images. */
+
+.full-bleed {
+  grid-column: 1 / -1;
+  overflow-x: auto;        /* narrow screens scroll the table sideways */
+  margin: 16px 0;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+.compare-table th,
+.compare-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.compare-table thead th {
+  background: #333;
+  color: #fff;
+}
+
+.compare-table tbody th {
+  background: #eee;
+  font-weight: normal;
+}
+
+/* --- Advice cards ------------------------------------------------------
+   A third grid. auto-fit means the three cards sit in a row when there is
+   space and stack when there is not — again, no media query. */
+
+.advice-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.advice-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: 4px solid #333;
+  padding: 16px;
+}
+
+.advice-card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.advice-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.next-step {
+  margin-top: 24px;
+}
+
+.next-step .btn {
+  margin-right: 8px;
+}
+
+/* --- Article page on small screens -------------------------------------
+   Below 800px, redraw the picture as a single column with the sidebar on
+   top. Note that ONLY the grid definition changes — no HTML moves, and no
+   individual element needs a new rule. That is the payoff of named areas. */
+
+@media (max-width: 800px) {
+  .article-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "headline"
+      "sidebar"
+      "body";
+  }
+
+  .article-sidebar {
+    position: static;      /* sticky makes no sense once it is stacked */
+  }
+
+  .article-headline h1 {
+    font-size: 26px;
+  }
+}
+
+/* --- Spec table -------------------------------------------------------- */
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;       /* single lines instead of double borders */
+  margin-top: 12px;
+}
+
+.spec-table th,
+.spec-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.spec-table th {
+  background: #eee;
+  width: 30%;
+}
+
+/* --- Footer ------------------------------------------------------------ */
+
+.site-footer {
+  background: #fff;
+  border-top: 2px solid #333;
+  padding: 20px 0;
+  color: #888;
+  font-size: 14px;
+}
+
+/* --- Small screens ----------------------------------------------------- */
+/* Below 700px the listing rows stack instead of sitting side by side. */
+
+@media (max-width: 700px) {
+  .item-row {
+    flex-direction: column;
+  }
+
+  .item-thumb {
+    flex: 1 1 auto;
+  }
+
+  .item-thumb img {
+    width: 100%;
+  }
+}

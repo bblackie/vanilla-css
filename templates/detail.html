@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ item.title }} &mdash; Wireframe Demo{% endblock %}
+
+{% block content %}
+
+  <p class="breadcrumb">
+    <a href="{{ url_for('index') }}">&larr; Back to listing</a>
+  </p>
+
+  <article class="detail">
+
+    <span class="badge">{{ item.category_name }}</span>
+    <h1>{{ item.title }}</h1>
+    <p class="lead">{{ item.summary }}</p>
+
+    <!-- Same photo as the listing, but requested at a much larger size. -->
+    <div class="detail-image">
+      <img src="https://picsum.photos/id/{{ item.image_id }}/1200/600"
+           alt="Large placeholder image for {{ item.title }}"
+           width="1200" height="600">
+      <p class="caption">Figure 1 &mdash; lorem ipsum placeholder image</p>
+    </div>
+
+    <!-- The body text is stored with blank lines between paragraphs,
+         so we split on those and wrap each chunk in its own <p>. -->
+    <div class="detail-body">
+      {% for paragraph in item.body.split('\n\n') %}
+        <p>{{ paragraph }}</p>
+      {% endfor %}
+    </div>
+
+    <h2>Additional Information</h2>
+    <table class="spec-table">
+      <tr><th>Item ID</th><td>{{ item.id }}</td></tr>
+      <tr><th>Category</th><td>{{ item.category_name }}</td></tr>
+      <tr><th>Lorem</th><td>Ipsum dolor sit amet</td></tr>
+      <tr><th>Consectetur</th><td>Adipiscing elit</td></tr>
+      <tr><th>Tempor</th><td>Incididunt ut labore</td></tr>
+    </table>
+
+  </article>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Not Found &mdash; Wireframe Demo{% endblock %}
+
+{% block content %}
+  <h1>404 &mdash; Not Found</h1>
+  <p class="lead">
+    There is no item with that id in the database.
+  </p>
+  <p><a class="btn" href="{{ url_for('index') }}">&larr; Back to listing</a></p>
+{% endblock %}

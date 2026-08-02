@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Home &mdash; Wireframe Demo{% endblock %}
+
+{% block content %}
+
+  <h1>Listing Page</h1>
+  <p class="lead">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Every row below
+    comes from the database. The category label comes from a <em>second</em>
+    table, pulled in with a JOIN.
+  </p>
+
+  <!-- The listing. One .item-row per record in the database. -->
+  <ul class="listing">
+    {% for item in items %}
+      <li class="item-row">
+
+        <div class="item-thumb">
+          <!-- Lorem Picsum: /id/<number>/<width>/<height> gives the same
+               photo every time, so the wireframe doesn't flicker on reload. -->
+          <img src="https://picsum.photos/id/{{ item.image_id }}/240/160"
+               alt="Placeholder image for {{ item.title }}"
+               width="240" height="160">
+        </div>
+
+        <div class="item-text">
+          <span class="badge">{{ item.category_name }}</span>
+          <h2><a href="{{ url_for('detail', item_id=item.id) }}">{{ item.title }}</a></h2>
+          <p>{{ item.summary }}</p>
+          <a class="btn" href="{{ url_for('detail', item_id=item.id) }}">
+            View details &rarr;
+          </a>
+        </div>
+
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

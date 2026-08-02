@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery &mdash; Wireframe Demo{% endblock %}
+
+{% block content %}
+
+  <h1>Gallery Page</h1>
+  <p class="lead">
+    The <em>same 12 records</em> as the listing page, from the same query.
+    Only the template and the CSS are different. A gallery leads with the
+    image and cuts the text right back.
+  </p>
+
+  <!-- THE GALLERY GRID ---------------------------------------------------
+       .gallery is a CSS Grid. Look at the rule in style.css: we never say
+       how many columns there are. The browser fits as many as will hold
+       240px and reflows on its own. No media queries needed. -->
+  <ul class="gallery">
+    {% for item in items %}
+
+      <li class="tile">
+        <!-- The WHOLE tile is one link, so the image and the caption are
+             both clickable. That is a much bigger target than a small
+             "view details" button, especially on a phone. -->
+        <a href="{{ url_for('detail', item_id=item.id) }}">
+
+          <!-- Square crop: gallery tiles look wrong at mixed heights, so we
+               ask Picsum for a square and let CSS crop it (see .tile img). -->
+          <img src="https://picsum.photos/id/{{ item.image_id }}/400/400"
+               alt="Placeholder image for {{ item.title }}"
+               width="400" height="400" loading="lazy">
+
+          <span class="tile-caption">
+            <span class="badge">{{ item.category_name }}</span>
+            <span class="tile-title">{{ item.title }}</span>
+          </span>
+
+        </a>
+      </li>
+
+    {% endfor %}
+  </ul>
+
+  <p><a class="btn" href="{{ url_for('index') }}">&larr; Back to the listing view</a></p>
+
+{% endblock %}
