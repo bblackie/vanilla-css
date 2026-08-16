@@ -1,4 +1,4 @@
-wireframe.db
+# wireframe.db
 __pycache__/
 *.pyc
 venv/

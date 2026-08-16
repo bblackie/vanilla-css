@@ -16,7 +16,7 @@ with a two-table SQLite database joined on a foreign key.
 ## Environment setup
 
 
-```
+```bash
 python -m venv .venv
 ```
 
@@ -26,17 +26,17 @@ Next, you activate it.
 ## Activate virtual environment
 
 On Windows PowerShell:
-```
+```bash
 .venv\Scripts\Activate.ps1
 ```
 If the prompt changes to include (.venv), that is evidence that the environment is active.
 
 NB: You might get an error here regarding running PowerShell scripts.  To resolve that run:
-```
+```bash
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 Then you upgrade pip:
-```
+```bash
 python -m pip install --upgrade pip
 ```
 This matters because pip is the tool that installs Python packages. Using python -m pip is clearer than just typing pip, because it makes sure the package installer belongs to the currently selected Python interpreter.
@@ -45,7 +45,7 @@ This matters because pip is the tool that installs Python packages. Using python
 ## Running it
 
 ```bash
-pip install flask
+pip install flask gunicorn
 ```
 ```bash
 python seed.py     # builds wireframe.db — run this first, and only once
@@ -192,3 +192,15 @@ which matters a lot on a phone.
 - Swap `auto-fill` for `auto-fit` and resize with only 2–3 items showing.
   `auto-fill` keeps empty columns, `auto-fit` collapses them.
 - Add a `price` or `date` column and sort the listing by it.
+
+# Deployment
+
+If using Render, need a requirements.txt
+```
+pip freeze > requirements.txt
+
+```
+
+To install
+```
+pip install -r requirements.txt
